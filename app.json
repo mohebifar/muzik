@@ -1,0 +1,13 @@
+{
+  "name": "muzik",
+  "description": "A simple music player made with React",
+  "repository": "https://github.com/mohebifar/muzik",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": [
+    "react",
+    "redux",
+    "redux-saga",
+    "music",
+    "player"
+  ]
+}
