@@ -16,7 +16,8 @@ import { togglePlayingState, setProgress } from 'redux/modules/player';
   state => ({
     audio: state.player.audio,
     playingState: state.player.playingState,
-    currentTime: state.player.currentTime
+    currentTime: state.player.currentTime,
+    song: state.player.currentSong
   }),
   {togglePlayingState, setProgress}
 )
@@ -24,6 +25,7 @@ export default class Player extends Component {
   static propTypes = {
     currentTime: PropTypes.number.isRequired,
     playingState: PropTypes.bool.isRequired,
+    song: PropTypes.object.isRequired,
     togglePlayingState: PropTypes.func.isRequired
   };
 
@@ -32,12 +34,12 @@ export default class Player extends Component {
   }
 
   render() {
-    const { playingState, currentTime, audio} = this.props;
+    const { playingState, currentTime, audio, song } = this.props;
     const progress = currentTime / audio.duration;
 
-    return (<Card>
+    return (<Card className={styles.container}>
       <CardMedia>
-        <img src="https://i.scdn.co/image/8675fae7dd68a7f8ee97d65106c2f68c8026498b"/>
+        <img src={song.album.images[1].url}/>
       </CardMedia>
       <CardActions>
         <div className={styles.seekBarContainer}>

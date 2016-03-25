@@ -1,4 +1,5 @@
 var fs = require('fs');
+var webpack = require('webpack');
 var babelrc = fs.readFileSync('./.babelrc');
 var babelLoaderQuery = JSON.parse(babelrc);
 
@@ -32,5 +33,12 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: __dirname + '/dist'
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development')
+      }
+    })
+  ]
 };

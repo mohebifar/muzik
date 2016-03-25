@@ -4,30 +4,53 @@ export const PAUSE = 'player/PAUSE';
 export const NEXT = 'player/NEXT';
 export const PREV = 'player/PREV';
 export const SET_SONG = 'player/SET_SONG';
+export const SEEKED = 'player/SEEKED';
+export const SET_PLAYLIST = 'player/SET_PLAYLIST';
 export const TOGGLE_PLAYING_STATE = 'player/TOGGLE_PLAYING_STATE';
 export const SHOW_CURRENT_TIME = 'player/SHOW_CURRENT_TIME';
 export const SET_CURRENT_PROGRESS = 'player/SHOW_CURRENT_PROGRESS';
 
 const initialState = {
   currentSong: null,
-  currentPlaylist: null,
+  currentPlaylist: [],
+  currentMeta: {},
   progress: 0,
   currentTime: 0,
-  audio: new Audio('https://p.scdn.co/mp3-preview/575230ca230ab7a79f1b2980e303d7f1612073f3'),
+  audio: new Audio(),
   playingState: false
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_SONG:
+      state.audio.src = action.song.preview_url;
+      state.audio.play();
+
       return {
         ...state,
-        currentSong: action.song
+        currentSong: action.song,
+        currentTime: 0,
+        playingState: true
+      };
+    case SET_PLAYLIST:
+      return {
+        ...state,
+        currentPlaylist: action.playlist.songs,
+        currentMeta: {
+          images: action.playlist.images,
+          name: action.playlist.name
+        }
+      };
+    case SEEKED:
+      return {
+        ...state,
+        currentTime: 0,
+        playingState: false
       };
     case SET_CURRENT_PROGRESS:
       const time = action.progress * state.audio.duration;
       state.audio.currentTime = time;
-
+    case SHOW_CURRENT_TIME:
       return {
         ...state,
         currentTime: state.audio.currentTime
@@ -59,13 +82,6 @@ export default function reducer(state = initialState, action) {
         ...state,
         playingState: true
       };
-    case SHOW_CURRENT_TIME:
-      return {
-        ...state,
-        playingState: true,
-        currentTime: action.time,
-        //progress: action.time / state.player.duration
-      };
     default:
       return state;
   }
@@ -78,15 +94,21 @@ export function togglePlayingState() {
 }
 
 export function setProgress(progress) {
-  console.log(progress.ra);
   return {
     type: SET_CURRENT_PROGRESS,
     progress
   };
 }
 
-const delayAnimation = function delay(ms) {
-  return new Promise(resolve => requestAnimationFrame(resolve))
+export function setSong(song) {
+  return {
+    type: SET_SONG,
+    song
+  };
+}
+
+const delayAnimation = function delay() {
+  return new Promise(resolve => requestAnimationFrame(resolve));
 };
 
 export function *seekSaga() {
@@ -94,8 +116,12 @@ export function *seekSaga() {
 
   const playingState = yield select(state => state.player.playingState);
   if (playingState) {
-    let time = yield select(state => state.player.audio.currentTime);
-    time += 1;
-    yield put({type: SHOW_CURRENT_TIME, time});
+    yield put({type: SHOW_CURRENT_TIME});
+    const currentTime = yield select(state => state.player.audio.currentTime);
+    const duration = yield select(state => state.player.audio.duration);
+
+    if (currentTime === duration) {
+      yield put({type: SEEKED});
+    }
   }
 }
