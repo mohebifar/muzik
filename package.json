@@ -2,8 +2,24 @@
   "name": "muzik",
   "version": "1.0.0",
   "description": "A preview music player",
-  "main": "index.js",
+  "main": "bin/server.js",
   "repository": "https://github.com/mohebifar/muzik",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrent --kill-others \"npm run webpack-dev\" \"npm run start-dev\"",
+    "webpack-dev": "webpack-dev-server --hot --inline --config webpack/dev.config.js",
+    "start-dev": "NODE_ENV=development NODE_PATH=./src node ./bin/server.js",
+    "start": "NODE_ENV=production NODE_PATH=./src node ./bin/server.js",
+    "build": "node ./node_modules/.bin/webpack --colors --config ./webpack/prod.config.js",
+    "postinstall": "npm run build"
+  },
+  "keywords": [
+    "music",
+    "player",
+    "spotify"
+  ],
+  "author": "Mohamad Mohebifar",
+  "license": "MIT",
   "dependencies": {
     "babel-polyfill": "^6.7.4",
     "express": "^4.13.4",
@@ -39,20 +55,5 @@
     "style-loader": "^0.13.0",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrent --kill-others \"npm run webpack-dev\" \"npm run start-dev\"",
-    "webpack-dev": "webpack-dev-server --hot --inline --config webpack/dev.config.js",
-    "start-dev": "NODE_ENV=development NODE_PATH=./src node ./bin/server.js",
-    "start-prod": "NODE_ENV=production NODE_PATH=./src node ./bin/server.js",
-    "build": "NODE_ENV=production webpack --colors --config ./webpack/prod.config.js"
-  },
-  "keywords": [
-    "music",
-    "player",
-    "spotify"
-  ],
-  "author": "Mohamad Mohebifar",
-  "license": "MIT"
+  }
 }
