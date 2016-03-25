@@ -46,11 +46,11 @@
     "webpack-dev": "webpack-dev-server --hot --inline --config webpack/dev.config.js",
     "start-dev": "NODE_ENV=development NODE_PATH=./src node ./bin/server.js",
     "start-prod": "NODE_ENV=production NODE_PATH=./src node ./bin/server.js",
-    "build": "NODE_ENV=production node ./node_modules/.bin/webpack --colors --config ./webpack/prod.config.js",
+    "build": "node_modules/.bin/webpack --colors --config ./webpack/prod.config.js",
     "postinstall": "npm run build"
   },
   "engines": {
-    "node": "5.1.0",
+    "node": "4.4.1",
     "npm": "3.3.12"
   },
   "keywords": [
