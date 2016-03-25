@@ -23,4 +23,4 @@ export default function *rootSaga() {
     takeEvery(LOAD_ARTIST_ALBUMS, loadArtistAlbumsSaga),
     takeEvery(LOAD_ALBUM_SONGS, loadAlbumSongsSaga)
   ];
-};
+}

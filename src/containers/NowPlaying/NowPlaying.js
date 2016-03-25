@@ -10,13 +10,16 @@ import { browserHistory } from 'react-router';
     song: state.player.currentSong,
     albumsLoaded: state.playlist.loaded
   }),
-  {loadAlbumSongs}
+  {
+    loadAlbumSongs
+  }
 )
 export default class NowPlaying extends Component {
   static propTypes = {
     params: PropTypes.shape({
       id: PropTypes.string.isRequired
     }),
+    song: PropTypes.object.isRequired,
     albumsLoaded: PropTypes.bool.isRequired,
     loadAlbumSongs: PropTypes.func.isRequired
   };

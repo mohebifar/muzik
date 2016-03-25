@@ -5,15 +5,21 @@ import { connect } from 'react-redux';
 import { setSong } from 'redux/modules/player';
 import styles from './Playlist.scss';
 
-@connect(state => ({playlist: state.player.currentPlaylist}), {setSong})
+@connect(
+  state => ({
+    playlist: state.player.currentPlaylist
+  }),
+  {
+    setSong
+  }
+)
 export default class Playlist extends Component {
   static propTypes = {
-    setSong: PropTypes.func.isRequired
+    setSong: PropTypes.func.isRequired,
+    playlist: PropTypes.array.isRequired
   };
 
-  handleClick(song) {
-    this.props.setSong(song);
-  }
+  handleClick = (song) => () => this.props.setSong(song);
 
   render() {
     const { playlist } = this.props;
@@ -23,7 +29,7 @@ export default class Playlist extends Component {
         playlist.map(song =>
           <ListItem
             key={song.id}
-            onClick={this.handleClick.bind(this, song)}
+            onClick={this.handleClick(song)}
             primaryText={song.artists[0].name}
             secondaryText={song.name}
           />)

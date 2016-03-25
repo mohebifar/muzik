@@ -7,7 +7,7 @@ const singletonEnforcer = Symbol();
 export default class ApiClient {
   constructor(enforcer) {
     if (enforcer !== singletonEnforcer) {
-      throw 'Cannot construct an object of ApiClient';
+      throw new Error('Cannot construct an object of ApiClient');
     }
 
     for (const method of methods) {
@@ -36,19 +36,22 @@ export default class ApiClient {
   }
 
   static prepareUrl(path) {
-    return `${ apiRoot }/${ path }`;
+    return `${apiRoot}/${path}`;
   }
 
-  fetch(method, url, { data, ...fetchOptions } = {}) {
+  fetch(method, url, { data, ...options } = {}) {
+    const fetchOptions = options;
     fetchOptions.headers = fetchOptions.headers || {};
-    fetchOptions.headers['Accept'] = 'application/json';
+    fetchOptions.headers.Accept = 'application/json';
 
     if (data) {
       fetchOptions.body = JSON.stringify(data);
       fetchOptions.headers['Content-Type'] = 'application/json';
     }
 
-    return fetch(ApiClient.prepareUrl(url), {method, ...fetchOptions})
+    fetchOptions.method = method;
+
+    return fetch(ApiClient.prepareUrl(url), fetchOptions)
       .then(ApiClient.checkStatus)
       .then(ApiClient.parseJSON);
   }

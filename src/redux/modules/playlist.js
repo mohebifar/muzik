@@ -31,7 +31,7 @@ export default function reducer(state = initialState, action) {
         data: [...state.data, ...action.data]
       };
     case LOAD_ALBUM_SONGS_SUCCESS:
-      const album = state.data.find(album => album.id === action.albumId);
+      const album = state.data.find(item => item.id === action.albumId);
       album.songs = action.data;
 
       return {
@@ -78,7 +78,7 @@ export function *loadArtistAlbumsSaga({artistId}) {
 }
 
 export function *loadAlbumSongsSaga({albumId}) {
-  const album = yield select(state => state.playlist.data.find(album => album.id === albumId));
+  const album = yield select(state => state.playlist.data.find(item => item.id === albumId));
   const loaded = album.songs;
 
   if (!loaded) {
@@ -90,6 +90,6 @@ export function *loadAlbumSongsSaga({albumId}) {
     yield put({type: LOAD_ALBUM_SONGS_SUCCESS, data: response.items, albumId});
   }
 
-  const playlist = yield select(state => state.playlist.data.find(album => album.id === albumId));
+  const playlist = yield select(state => state.playlist.data.find(item => item.id === albumId));
   yield put({type: SET_PLAYLIST, playlist});
 }

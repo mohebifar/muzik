@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'production') {
   assets.styles.push('/dist/main.css');
 }
 
-app.use(express.static(__dirname + '/../static'));
+app.use(express.static(`${__dirname}/../static`));
 
 app.use((req, res) => {
   const element = <Html assets={assets}/>;

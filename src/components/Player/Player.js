@@ -19,22 +19,27 @@ import { togglePlayingState, setProgress } from 'redux/modules/player';
     currentTime: state.player.currentTime,
     song: state.player.currentSong
   }),
-  {togglePlayingState, setProgress}
+  {
+    togglePlayingState,
+    setProgress
+  }
 )
 export default class Player extends Component {
   static propTypes = {
     currentTime: PropTypes.number.isRequired,
     playingState: PropTypes.bool.isRequired,
+    setProgress: PropTypes.func.isRequired,
     song: PropTypes.object.isRequired,
+    audio: PropTypes.object.isRequired,
     togglePlayingState: PropTypes.func.isRequired
   };
 
-  handleChangeSeek(event, progress) {
+  handleChangeSeek = (event, progress) => {
     this.props.setProgress(progress);
-  }
+  };
 
   render() {
-    const { playingState, currentTime, audio, song } = this.props;
+    const { playingState, currentTime, song, audio } = this.props;
     const progress = currentTime / audio.duration;
 
     return (<Card className={styles.container}>
@@ -43,7 +48,7 @@ export default class Player extends Component {
       </CardMedia>
       <CardActions>
         <div className={styles.seekBarContainer}>
-          <Slider onChange={this.handleChangeSeek.bind(this)} value={progress}/>
+          <Slider onChange={this.handleChangeSeek} value={progress}/>
         </div>
         <div className={styles.controlsContainer}>
           <IconButton>

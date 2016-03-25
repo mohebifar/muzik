@@ -16,4 +16,4 @@ export default function getRoutes(store) {
       <Route path="now-playing/:id" component={NowPlaying}/>
     </Route>
   </Router>);
-};
+}

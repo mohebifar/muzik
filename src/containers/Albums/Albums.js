@@ -3,15 +3,24 @@ import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/lib/circular-progress';
 import Album from 'components/Album/Album';
 import { loadArtistAlbums, isLoaded } from 'redux/modules/playlist';
+import styles from './Albums.scss';
 
-@connect(state => ({
-  albums: state.playlist.data,
-  loading: state.playlist.loading,
-  loaded: state.playlist.loaded
-}), {loadArtistAlbums})
+@connect(
+  state => ({
+    albums: state.playlist.data,
+    loading: state.playlist.loading,
+    loaded: state.playlist.loaded
+  }),
+  {
+    loadArtistAlbums
+  }
+)
 export default class Albums extends Component {
   static propTypes = {
-    loadArtistAlbums: PropTypes.func.isRequired
+    loadArtistAlbums: PropTypes.func.isRequired,
+    albums: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+    loaded: PropTypes.bool.isRequired
   };
 
   static contextTypes = {
@@ -28,7 +37,7 @@ export default class Albums extends Component {
   renderAlbums() {
     const { albums } = this.props;
 
-    return (<div style={{display: 'flex'}}>
+    return (<div style={styles.albumsContainer}>
       {
         albums.map(album => <Album key={album.id} album={album}/>)
       }
@@ -38,7 +47,7 @@ export default class Albums extends Component {
   render() {
     const { loading } = this.props;
 
-    return (<div style={{textAlign: 'center'}}>
+    return (<div className={styles.container}>
       {
         loading ? <CircularProgress /> : this.renderAlbums()
       }

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Card from 'material-ui/lib/card/card';
 import CardMedia from 'material-ui/lib/card/card-media';
@@ -18,7 +17,8 @@ export default class Album extends Component {
       <Link to={`/now-playing/${album.id}`}>
         <Card>
           <CardMedia
-            overlay={<CardTitle title={album.name}/>}>
+            overlay={<CardTitle title={album.name}/>}
+          >
             <img src={album.images[1].url}/>
           </CardMedia>
         </Card>

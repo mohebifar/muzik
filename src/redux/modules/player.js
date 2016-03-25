@@ -21,10 +21,12 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) {
+  const audio = state.audio;
+
   switch (action.type) {
     case SET_SONG:
-      state.audio.src = action.song.preview_url;
-      state.audio.play();
+      audio.src = action.song.preview_url;
+      audio.play();
 
       return {
         ...state,
@@ -48,8 +50,7 @@ export default function reducer(state = initialState, action) {
         playingState: false
       };
     case SET_CURRENT_PROGRESS:
-      const time = action.progress * state.audio.duration;
-      state.audio.currentTime = time;
+      audio.currentTime = action.progress * state.audio.duration;
     case SHOW_CURRENT_TIME:
       return {
         ...state,
